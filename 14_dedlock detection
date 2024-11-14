@@ -1,0 +1,104 @@
+import java.util.Scanner;
+
+public class DeadlockDetectionSimple {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Input number of processes and resources
+        System.out.print("Enter number of processes: ");
+        int processCount = sc.nextInt();
+        System.out.print("Enter number of resources: ");
+        int resourceCount = sc.nextInt();
+
+        int[][] allocation = new int[processCount][resourceCount];
+        int[][] max = new int[processCount][resourceCount];
+        int[] available = new int[resourceCount];
+
+        // Input allocation matrix
+        System.out.println("Enter Allocation Matrix:");
+        for (int i = 0; i < processCount; i++) {
+            for (int j = 0; j < resourceCount; j++) {
+                allocation[i][j] = sc.nextInt();
+            }
+        }
+
+        // Input max matrix
+        System.out.println("Enter Max Matrix:");
+        for (int i = 0; i < processCount; i++) {
+            for (int j = 0; j < resourceCount; j++) {
+                max[i][j] = sc.nextInt();
+            }
+        }
+
+        // Input available resources
+        System.out.println("Enter Available Resources:");
+        for (int j = 0; j < resourceCount; j++) {
+            available[j] = sc.nextInt();
+        }
+
+        // Deadlock detection
+        boolean[] finished = new boolean[processCount];
+        int[] work = available.clone();
+        boolean deadlockDetected = false;
+
+        while (true) {
+            boolean progress = false;
+            for (int i = 0; i < processCount; i++) {
+                if (!finished[i] && canProceed(allocation[i], max[i], work)) {
+                    // Mark process as finished and release its resources
+                    for (int j = 0; j < resourceCount; j++) {
+                        work[j] += allocation[i][j];
+                    }
+                    finished[i] = true;
+                    progress = true;
+                }
+            }
+            if (!progress) {
+                for (boolean f : finished) {
+                    if (!f) {
+                        deadlockDetected = true;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        if (deadlockDetected) {
+            System.out.println("Deadlock detected!");
+        } else {
+            System.out.println("No deadlock detected.");
+        }
+
+        sc.close();
+    }
+
+    private static boolean canProceed(int[] allocation, int[] max, int[] work) {
+        for (int j = 0; j < work.length; j++) {
+            if (max[j] - allocation[j] > work[j]) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+
+/*
+// Input:
+// Enter number of processes: 3
+// Enter number of resources: 3
+// Enter Allocation Matrix:
+// 0 1 0
+// 2 0 0
+// 3 0 3
+// Enter Max Matrix:
+// 7 5 3
+// 3 2 2
+// 9 0 2
+// Enter Available Resources:
+// 3 3 2
+
+// Output:
+// Deadlock detected!
+*/
