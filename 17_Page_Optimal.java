@@ -73,3 +73,11 @@ public class OptimalPageReplacement {
         return Integer.MAX_VALUE; // Return a large value if the page is not found again
     }
 }
+
+
+/*
+Enter the number of pages in the reference string: 12
+Enter the pages in the reference string:
+1 3 0 3 5 6 3 1 3 6 1 2
+Enter the number of page frames: 3
+*/
