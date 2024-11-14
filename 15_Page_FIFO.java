@@ -51,3 +51,9 @@ public class FIFOPaging {
         System.out.println("Total page faults using FIFO: " + pageFaults);
     }
 }
+/*
+Enter the number of pages in the reference string: 12
+Enter the pages in the reference string:
+1 3 0 3 5 6 3 1 3 6 1 2
+Enter the number of page frames: 3
+*/
